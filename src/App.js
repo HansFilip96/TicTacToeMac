@@ -27,6 +27,17 @@ function App() {
     return Math.floor(Math.random() * max);
   }
 
+  const simulateCpuMove = (newArray) => {
+    while (true) {
+      let random = getRandomInt(9);
+      if (newArray[random] === null) {
+        newArray[random] = "O";
+        SetBoxSelections([...newArray]);
+        break;
+      }
+    }
+  };
+
   const setBoxToValue = (coordinate) => {
     if (BoxSelections[coordinate] == null) {
       if (GameState == 1) {
@@ -39,23 +50,15 @@ function App() {
           SetUserIconSelection(0);
         }
         SetBoxSelections(newArray);
-      }
-      if (GameState == 2) {
-        let newArray = [...BoxSelections];
-
-        if (UserIconSelection == 0) {
-          function getRandomInt(max) {
-            return Math.floor(Math.random() * max);
-          }
-          newArray[getRandomInt(8)] = "X";
-          SetUserIconSelection(1);
-        } else {
-          newArray[coordinate] = "O";
-          SetUserIconSelection(0);
-        }
-        SetBoxSelections(newArray);
       } else {
-        /// dator logik här
+        let newArray = [...BoxSelections];
+        newArray[coordinate] = "X";
+        SetUserIconSelection(1);
+        SetBoxSelections(newArray);
+
+        setTimeout(() => {
+          simulateCpuMove(newArray);
+        }, 1000);
       }
     }
   };
